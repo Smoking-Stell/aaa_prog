@@ -17,7 +17,8 @@ def hierarchy_visualize(departments: dict):
 
 def hierarchy(table: list):
     """
-    Makes a structure of departments and teams. After that write all of them in console
+    Makes a structure of departments and teams.
+    After that write all of them in console
 
     :param table: list of lists which contains all information from csv
     :return: nothing
@@ -64,7 +65,7 @@ def info_visualize(departments_info: dict):
     :return: nothing
     """
 
-    print(f"Department, number of employees, Min-Max salary, average salary")
+    print("Department, number of employees, Min-Max salary, average salary")
 
     for dep in departments_info:
 
@@ -89,7 +90,8 @@ def departments_info_build(table: list) -> dict:
         if depart not in departments_info.keys():
             departments_info[depart] = [1, salary, salary, salary]
         else:
-            departments_info[depart] = update_dep_info(departments_info[depart], salary)
+            departments_info[depart] = \
+                update_dep_info(departments_info[depart], salary)
 
     return departments_info
 
@@ -114,19 +116,21 @@ def dict_to_csv(department_info: dict):
     :return:
     """
 
-    headers = ["Department", "number of employees", "Min-Max salary", "average salary"]
+    headers = ["Department", "number of employees",
+               "Min-Max salary", "average salary"]
 
-    with open('dept_info.csv', 'w', encoding='utf-8') as f:
+    with open("dept_info.csv", "w", encoding="utf-8") as f:
         f.write(';'.join(headers) + '\n')
 
         for key, values in department_info.items():
             row = [key] + values
-            f.write(';'.join(map(str, row)) + '\n')
+            f.write(";".join(map(str, row)) + '\n')
 
 
 def csv_save(table: list):
     """
-    Get information from csv and then reorganise it to short info for each department
+    Get information from csv and then
+    reorganise it to short info for each department
 
     :param table: list of lists which contains all information from csv
     :return: nothing
@@ -138,7 +142,8 @@ def csv_save(table: list):
 
 def read_file_csv(file_name: str = "Corp_Summary") -> list:
     """
-    Read csv file, parse it and convert to list of lists, where each list is row
+    Read csv file, parse it and convert to list of lists,
+     where each list is row
 
     :param file_name: name of input file without csv
     :return: list of lists which contains information from csv
@@ -146,16 +151,22 @@ def read_file_csv(file_name: str = "Corp_Summary") -> list:
 
     file_name = "{}{}".format(file_name, ".csv")
     data = []
-    with open(file_name, 'r', encoding='utf-8') as file:
+    with open(file_name, "r", encoding="utf-8") as file:
         next(file)
         for line in file:
             stripped_line = line.strip()
-            column = stripped_line.split(';')
+            column = stripped_line.split(";")
             data.append(column)
     return data
 
 
 def menu():
+    """
+    Main functions. Asks user which request he want, then give solution
+
+    :return:
+    """
+
     menu_options = {1: hierarchy,
                     2: departments_review,
                     3: csv_save}
