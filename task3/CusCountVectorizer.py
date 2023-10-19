@@ -38,5 +38,8 @@ class CusCountVectorizer:
         self.fit(documents)
         return self.transform(documents)
 
-    def get_features_names_out(self):
+    def get_feature_names_out(self):
         return sorted(self.vocabulary_, key=self.vocabulary_.get)
+
+    def get_feature_names(self):
+        return self.get_feature_names_out()
