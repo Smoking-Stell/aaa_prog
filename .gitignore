@@ -1,1 +1,5 @@
-/task1_directory/myenv
+/task1/myenv
+
+.idea/
+*.iml
+*.xml
