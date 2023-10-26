@@ -2,7 +2,13 @@ from task4.TransformFunctions import tf_transform, idf_transform
 
 
 class TfidfTransformer:
-    def fit_transform(self, count_matrix):
+    def fit_transform(self, count_matrix: list) -> list:
+        """Calculate tfidf matrix for each document
+
+        :param count_matrix: matrix which shows amount of words
+        from documents; each row is doc, each column is word
+        :return: tfidf matrix
+        """
         tfs = tf_transform(count_matrix)
         idfs = idf_transform(count_matrix)
         res = []

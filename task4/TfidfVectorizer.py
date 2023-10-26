@@ -4,6 +4,7 @@ from task4.TfidfTransformer import TfidfTransformer
 
 class TfidfVectorizer(CusCountVectorizer):
     """Inherited from CusCountVectorizer
+        Added tdidf calculation method
 
     """
 
