@@ -1,5 +1,6 @@
 import math
 
+
 def tf_transform(count_matrix: list) -> list:
     """ Calculate tf vectors (repetitions / total) for each document in matrix
 
@@ -45,6 +46,6 @@ def idf_transform(count_matrix: list) -> list:
 
 if __name__ == '__main__':
     count_matrix_test = [[1, 1, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0],
-                        [0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1]]
+                         [0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1]]
     print(f"TF test: {tf_transform(count_matrix_test)}\n")
     print(f"IDF test: {idf_transform(count_matrix_test)}\n")
