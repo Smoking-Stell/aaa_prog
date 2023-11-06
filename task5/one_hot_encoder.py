@@ -17,7 +17,8 @@ def fit_transform(*args: str) -> List[Tuple[str, List[int]]]:
     transformed_rows = []
 
     for cat in categories:
-        bin_view_cat = (int(b) for b in bin_format.format(1 << len(seen_categories)))
+        bin_view_cat = (int(b)
+                        for b in bin_format.format(1 << len(seen_categories)))
         seen_categories.setdefault(cat, list(bin_view_cat))
         transformed_rows.append((cat, seen_categories[cat]))
 

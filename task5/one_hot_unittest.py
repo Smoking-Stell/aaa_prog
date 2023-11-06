@@ -2,6 +2,7 @@ import unittest
 
 from one_hot_encoder import fit_transform
 
+
 class TestOneHot(unittest.TestCase):
     def test_solo(self):
         self.assertEqual(fit_transform('apple'), [('apple', [1])])
@@ -34,9 +35,6 @@ class TestOneHot(unittest.TestCase):
         ]
         self.assertEqual(fit_transform(city), expected)
 
-
     def test_empty(self):
         with self.assertRaises(TypeError):
             fit_transform()
-
-
