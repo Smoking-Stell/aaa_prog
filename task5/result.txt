@@ -1,0 +1,44 @@
+issuue-01
+
+MAI-PYTHON-2019
+
+Process finished with exit code 0
+
+issuue-02
+
+rootdir: D:\Avito_stuf\avito_prog\task5
+collected 4 items
+
+morse_pytest.py ....     [100%]
+
+4 passed in 0.02s
+
+issuue-03
+
+Launching unittests with arguments python -m unittest one_hot_unittest.TestOneHot in D:\Avito_stuf\avito_prog\task5
+
+
+
+Ran 5 tests in 0.019s
+
+OK
+
+issuue-04
+
+platform win32 -- Python 3.10.0, pytest-7.4.3, pluggy-1.3.0
+rootdir: D:\Avito_stuf\avito_prog\task5
+collected 5 items
+
+one_hot_pytest.py .....  [100%]
+
+5 passed in 0.02s
+
+issuue-05
+
+Launching unittests with arguments python -m unittest what_year_is_now_test.TestWhatIsYearNow in D:\Avito_stuf\avito_prog\task5
+
+
+
+Ran 4 tests in 0.013s
+
+OK
