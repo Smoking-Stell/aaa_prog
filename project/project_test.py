@@ -1,6 +1,6 @@
 import pytest
 
-from pizza_delivery import order, menu
+from pizza_delivery import menu
 from Pizzas import Pepperoni, Margherita, MainPizza
 
 
@@ -12,7 +12,7 @@ def test_menu(capsys):
 
     try:
         menu()
-    except SystemExit as e:
+    except SystemExit:
         pass
     captured = capsys.readouterr()
 
@@ -36,4 +36,3 @@ def test_pizzas():
     assert mar == mar2
     assert mar != peper2
     assert def_pizza != mar
-
