@@ -11,12 +11,21 @@ def is_keyword(word):
         return False
 
 
-class Advert:
+class ColorizeMixin:
+    repr_color_code = 0
+
+    def __str__(self):
+        original_str = super().__str__()
+        return f"\033[{self.repr_color_code}m{original_str}\033[0m"
+
+
+
+class Advert(ColorizeMixin):
 
     def __init__(self, mapping):
         if isinstance(mapping, str):
             mapping = json.loads(mapping)
-        self.price = 0
+        self.price_ = 0
 
         for key, value in mapping.items():
             if isinstance(value, dict):
@@ -27,9 +36,18 @@ class Advert:
                 key += '_'
             setattr(self, key, value)
 
+    def __str__(self):
+        attributes = vars(self)
+
+        attributes_str_list = []
+
+        for key, value in attributes.items():
+            attributes_str_list.append(f"{value}")
+        return "| ".join(attributes_str_list)
+
     @property
     def price(self):
-        return self.price
+        return self.price_
 
     @price.setter
     def price(self, value):
@@ -37,7 +55,7 @@ class Advert:
             raise TypeError("Price must be number")
         if value < 0:
             raise ValueError("Price must be >= 0")
-        self._price = value
+        self.price_ = value
 
 
 def main():
@@ -52,6 +70,28 @@ def main():
 
     ad = Advert(json.loads(json_test))
     print(ad.location.metro_stations)
+
+    ad.price = 150
+    print(ad.price)
+
+    try:
+        ad2 = {"price": 100,
+               "color": "green"}
+    except ValueError as e:
+        print(e)
+
+
+    ad3 = Advert({  "title": "Вельш-корги",
+                "price": 1000,
+                "class": "dogs",
+                "location": {
+                    "address": "сельское поселение Ельдигинское, "
+                           "поселок санатория Тишково, 25"
+                }
+            })
+
+
+    print(ad3)
 
 
 if __name__ == '__main__':
