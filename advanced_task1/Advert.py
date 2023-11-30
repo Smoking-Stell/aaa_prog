@@ -15,12 +15,12 @@ class ColorizeMixin:
     repr_color_code = 0
 
     def __str__(self):
-        original_str = super().__str__()
+        original_str = self.__repr__()
         return f"\033[{self.repr_color_code}m{original_str}\033[0m"
 
 
-
 class Advert(ColorizeMixin):
+    repr_color_code = 32
 
     def __init__(self, mapping):
         if isinstance(mapping, str):
@@ -29,21 +29,30 @@ class Advert(ColorizeMixin):
 
         for key, value in mapping.items():
             if isinstance(value, dict):
-                value = Advert(value)
+                value = self.interrior_dict(value)
             if key == "price":
                 self.price = value
             if is_keyword(key):
                 key += '_'
             setattr(self, key, value)
 
-    def __str__(self):
+        # if not hasattr(self, 'title'):
+        #     raise ValueError("Title is necessary")
+
+    def __repr__(self):
         attributes = vars(self)
 
         attributes_str_list = []
 
         for key, value in attributes.items():
             attributes_str_list.append(f"{value}")
-        return "| ".join(attributes_str_list)
+        return " | ".join(attributes_str_list)
+
+    def interrior_dict(self, mapping):
+        inter_ad = Advert(mapping)
+        delattr(inter_ad, 'price_')
+
+        return inter_ad
 
     @property
     def price(self):
@@ -75,21 +84,21 @@ def main():
     print(ad.price)
 
     try:
-        ad2 = {"price": 100,
-               "color": "green"}
+        ad2 = Advert({"price": 100,
+               "color": "green"})
+        print(ad2)
     except ValueError as e:
         print(e)
 
 
-    ad3 = Advert({  "title": "Вельш-корги",
-                "price": 1000,
-                "class": "dogs",
-                "location": {
-                    "address": "сельское поселение Ельдигинское, "
-                           "поселок санатория Тишково, 25"
-                }
-            })
-
+    ad3 = Advert({"title": "Вельш-корги",
+                  "price": 1000,
+                  "class": "dogs",
+                  "location": {
+                      "address": "сельское поселение Ельдигинское, "
+                                 "поселок санатория Тишково, 25"
+                  }
+                  })
 
     print(ad3)
 
