@@ -3,7 +3,6 @@ class Color():
     END = '\033[0'
     MOD = 'm'
 
-
     def __init__(self, r, g, b):
         self.r = r
         self.g = g
@@ -17,6 +16,7 @@ class Color():
         if not isinstance(other, Color):
             return False
         return self.r == other.r and self.g == other.g and self.b == other.b
+
 
 def main():
     red = Color(255, 10, 10)
