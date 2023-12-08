@@ -17,6 +17,17 @@ class Color():
             return False
         return self.r == other.r and self.g == other.g and self.b == other.b
 
+    def __add__(self, other):
+        if not isinstance(other, Color):
+            raise TypeError("we need two colors")
+
+        new_red = min(self.r + other.r, 255)
+        new_green = min(self.g + other.g, 255)
+        new_blue = min(self.b + other.b, 255)
+
+        ans = Color(new_red, new_green, new_blue)
+        return ans
+
 
 def main():
     red = Color(255, 10, 10)
@@ -25,6 +36,8 @@ def main():
     print(red)
     print(red == red2)
     print(red == green)
+
+    print(red + green)
 
 
 if __name__ == '__main__':
