@@ -14,7 +14,6 @@ from telegram.ext import (
     ContextTypes,
     ConversationHandler,
 )
-import os
 
 from information import token_tic_tac_toe
 
@@ -22,7 +21,8 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s '
            '- %(message)s', level=logging.INFO
 )
-# set higher logging level for httpx to avoid all GET and POST requests being logged
+# set higher logging level for httpx to avoid all
+# GET and POST requests being logged
 logging.getLogger('httpx').setLevel(logging.WARNING)
 
 logger = logging.getLogger(__name__)
@@ -37,7 +37,7 @@ CROSS = 'X'
 ZERO = 'O'
 
 
-DEFAULT_STATE = [ [FREE_SPACE for _ in range(3) ] for _ in range(3) ]
+DEFAULT_STATE = [[FREE_SPACE for _ in range(3)] for _ in range(3)]
 
 
 def get_default_state():
@@ -70,14 +70,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     return CHOOSING_OPPONENT
 
 
-def computer_move(fields: list[list[str]]) -> (int, int):
+def empty_count(fields: list[list[str]]) -> int:
     counter = 0
     for i in range(3):
         for j in range(3):
             if fields[i][j] == FREE_SPACE:
                 counter += 1
+    return counter
 
-    pos = random.randint(1, counter)
+
+def computer_move(fields: list[list[str]]) -> (int, int):
+    pos = random.randint(1, empty_count(fields))
 
     for i in range(3):
         for j in range(3):
@@ -99,10 +102,34 @@ def swap_player(current_position: str) -> str:
     return CROSS
 
 
+def won(fields: list[list[str]]) -> bool:
+    """Check if crosses or zeros have won the game"""
+    for i in range(3):
+        if fields[i][0] == fields[i][1] == fields[i][2] != FREE_SPACE or \
+                fields[0][i] == fields[1][i] == fields[2][i] != FREE_SPACE:
+            return True
+
+    if fields[0][0] == fields[1][1] == fields[2][2] != FREE_SPACE or \
+            fields[0][2] == fields[1][1] == fields[2][0] != FREE_SPACE:
+        return True
+
+    return False
+
+
+def draw(fields: list[list[str]]) -> bool:
+    """method for draw checking
+
+    :param fields: filed of game
+    :return: do we havw draw or not
+    """
+    return empty_count(fields) == 0
+
+
 async def game(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
     """Main processing of the game"""
 
     query = update.callback_query
+
     await query.answer()
 
     update_row, update_col = int(query.data[0]), int(query.data[1])
@@ -127,9 +154,12 @@ async def game(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
                 swap_player(context.user_data['current_player'])
 
             if won(context.user_data['keyboard_state']):
-                await query.edit_message_text \
-                    (f"Computer win!")
+                await query.edit_message_text(f"Computer win!")
                 return FINISH_GAME
+
+        if draw(context.user_data['keyboard_state']):
+            await query.edit_message_text(f"Draw!")
+            return FINISH_GAME
 
         keyboard = generate_keyboard(context.user_data['keyboard_state'])
 
@@ -138,26 +168,10 @@ async def game(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
             text=f"Now {context.user_data['current_player']}'s turn",
             reply_markup=reply_markup
         )
-
         return CONTINUE_GAME
     else:
         await query.edit_message_text('This space is not free.')
         return CONTINUE_GAME
-
-
-def won(fields: list[list[str]]) -> bool:
-    """Check if crosses or zeros have won the game"""
-    for i in range(3):
-        if fields[i][0] == fields[i][1] == fields[i][2] != FREE_SPACE or \
-                fields[0][i] == fields[1][i] == fields[2][i] != FREE_SPACE:
-            return True
-
-    if fields[0][0] == fields[1][1] == fields[2][2] != FREE_SPACE or \
-            fields[0][2] == fields[1][1] == fields[2][0] != FREE_SPACE:
-        return True
-
-    return False
-
 
 
 async def end(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
@@ -221,7 +235,8 @@ def main() -> None:
         fallbacks=[CommandHandler('start', start)],
     )
 
-    # Add ConversationHandler to application that will be used for handling updates
+    # Add ConversationHandler to application that
+    # will be used for handling updates
     application.add_handler(conv_handler)
 
     # Run the bot until the user presses Ctrl-C
